@@ -1,0 +1,26 @@
+﻿@model Memberships.Entities.ProductType
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Product Type Details</h2>
+
+<div>
+    <h4>Section</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.Partial("_EditButtonPartial", Model.ID)
+    @Html.Partial("_BackToListButtonPartial")
+</p>

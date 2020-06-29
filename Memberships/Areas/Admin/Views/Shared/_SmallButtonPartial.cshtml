@@ -1,0 +1,12 @@
+﻿
+@model Memberships.Areas.Admin.Models.SmallButtonModel
+
+
+@*This partial view will be one of the tiny buttons in the 3-button set Edit|Details|Delete*@
+@*This is going to be super rad! We're creating dynamic buttons using the information in the SmallButtonModels class. Far out!*@
+
+<a type="button" class="btn @Model.ButtonType btn-sm"
+   href="@Url.Action(Model.Action)@Model.ActionParameters">
+    <span class="glyphicon glyphicon-@Model.Glyph"></span>
+    <span class="sr-only">@Model.Text</span> @*Text will not be displayed, only for browser optimization, screen readers, etc.*@
+</a>

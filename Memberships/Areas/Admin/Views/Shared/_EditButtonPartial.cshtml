@@ -1,0 +1,9 @@
+﻿@model int
+
+@*The point of this is to contain a button that will say Edit*@
+<a type="button" class="btn btn-primary btn-sm" 
+   href="@Url.Action("Edit",new {id=Model})">
+    <span class="glyphicon glyphicon-edit"></span>
+    <span>Edit</span>
+</a>
+
