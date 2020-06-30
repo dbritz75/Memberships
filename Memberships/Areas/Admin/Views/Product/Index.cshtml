@@ -14,30 +14,28 @@
     <tr class="success">
         <th>@Html.DisplayNameFor(model => model.Title)</th>
         <th>@Html.DisplayNameFor(model => model.Description)</th>
-        <th>@Html.DisplayNameFor(model => model.HTML)</th>
-        <th>@Html.DisplayNameFor(model => model.WaitDays)</th>
-        <th>@Html.DisplayNameFor(model => model.ItemTypeID)</th>
-        <th>@Html.DisplayNameFor(model => model.SectionID)</th>
-        <th>@Html.DisplayNameFor(model => model.PartID)</th>
-        <th>@Html.DisplayNameFor(model => model.IsFree)</th>
+        <th>@Html.DisplayNameFor(model => model.ProductLinkTexts)</th>
+        <th>@Html.DisplayNameFor(model => model.ProductTypes)</th>
         <th></th>
     </tr>
 
     @foreach (var product in Model)
     {
         <tr>
-            <td>@Html.DisplayFor(modelItem => product.)</td>
+            <td>@Html.DisplayFor(modelItem => product.Title)</td>
             <td>@Html.DisplayFor(modelItem => product.Description)</td>
-            <td>@Html.DisplayFor(modelItem => product.HTML)</td>
-            <td>@Html.DisplayFor(modelItem => product.WaitDays)</td>
-            <td>@Html.DisplayFor(modelItem => product.ItemTypeID)</td>
-            <td>@Html.DisplayFor(modelItem => product.SectionID)</td>
-            <td>@Html.DisplayFor(modelItem => product.PartID)</td>
-            <td>@Html.DisplayFor(modelItem => product.IsFree)</td>
             <td>
-                @Html.Partial("_TableButtonsPartial", 
-                    new SmallButtonModel
-                    { ID = product.ID})
+                @Html.DisplayFor(modelItem => product.ProductLinkText)
+                (@{@Html.DisplayFor(modelItem => product.ProductLinkTextID)})
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => product.ProductType)
+                (@{@Html.DisplayFor(modelItem => product.ProductTypeID)})
+            </td>
+            <td>
+                @Html.Partial("_TableButtonsPartial",
+                new SmallButtonModel
+                { ID = product.ID })
             </td>
         </tr>
     }

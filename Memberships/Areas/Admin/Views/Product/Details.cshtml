@@ -1,4 +1,4 @@
-﻿@model Memberships.Entities.Item
+﻿@model Memberships.Areas.Admin.Models.ProductModel
 
 @{
     ViewBag.Title = "Details";
@@ -7,96 +7,23 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Item</h4>
+    <h4>Product Details</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
+        <dt>@Html.DisplayNameFor(model => model.Title)</dt>
+        <dd>@Html.DisplayFor(model => model.Title)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
+        <dt>@Html.DisplayNameFor(model => model.Description)</dt>
+        <dd>@Html.DisplayFor(model => model.Description)</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+        <dt>@Html.DisplayNameFor(model => model.ImageURL)</dt>
+        <dd>@Html.DisplayFor(model => model.ImageURL)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+        <dt>@Html.DisplayNameFor(model => model.ProductTypes)</dt>
+        <dd>@Html.DisplayFor(model => model.ProductType)</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ItemURL)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ItemURL)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ImageURL)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ImageURL)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.HTML)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.HTML)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.WaitDays)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.WaitDays)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ItemTypeID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ItemTypeID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProductID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SectionID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SectionID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PartID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PartID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsFree)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsFree)
-        </dd>
+        <dt>@Html.DisplayNameFor(model => model.ProductLinkTexts)</dt>
+        <dd>@Html.DisplayFor(model => model.ProductLinkText)</dd>
 
     </dl>
 </div>

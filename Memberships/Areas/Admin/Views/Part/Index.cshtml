@@ -11,18 +11,14 @@
 </p>
 <table class="table table-condensed table-bordered">
     <tr class="success">
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th></th>
+        <th>@Html.DisplayNameFor(model => model.Title)</th>
+        <th>DO STUFF</th>
     </tr>
 
     @foreach (var item in Model)
     {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
+            <td>@Html.DisplayFor(modelItem => item.Title)</td>
             
             @Html.Partial("_TableButtonsPartial",
             new SmallButtonModel
