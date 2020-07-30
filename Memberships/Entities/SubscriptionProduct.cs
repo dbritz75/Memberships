@@ -10,9 +10,7 @@ namespace Memberships.Entities
     [Table("Subscription_Product")]
     public class Subscription_Product
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
-        //Product ID and Item ID is a composite primary key, thus the "Key(Column...)" syntax.
+        //Product ID and Subscription ID is a composite primary key, thus the "Key(Column...)" syntax.
 
         [Required]
         [Key, Column(Order = 1)]

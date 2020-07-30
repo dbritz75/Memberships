@@ -1,0 +1,29 @@
+﻿@model Memberships.Areas.Admin.Models.ProductItemModel
+@using Memberships.Areas.Admin.Models
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Product Item Pairings</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(m => m.ItemTitle)</dt>
+        <dd>@Html.DisplayFor(m => m.ItemTitle)</dd>
+        <dt>@Html.DisplayNameFor(m => m.ProductTitle)</dt>
+        <dd>@Html.DisplayFor(m => m.ProductTitle)</dd>
+    </dl>
+</div>
+<p>
+
+    @*This code builds the button url. See Admin/Models/SmallButtonModel.cs*@
+    @Html.Partial("_EditButtonDetailPartial", new EditButtonModel
+        {
+            ItemID = Model.ItemID,
+            ProductID = Model.ProductID
+        }) |
+    @Html.Partial("_BackToListButtonPartial")
+
+</p>

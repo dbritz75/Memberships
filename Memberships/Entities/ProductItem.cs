@@ -10,8 +10,6 @@ namespace Memberships.Entities
     [Table("Product_Item")]
     public class Product_Item
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
         //Product ID and Item ID is a composite primary key, thus the "Key(Column...)" syntax.
 
         [Required]

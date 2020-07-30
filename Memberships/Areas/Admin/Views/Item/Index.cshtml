@@ -5,7 +5,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Items</h2>
 
 <p>
     @Html.Partial("_CreateButtonPartial")
@@ -20,7 +20,7 @@
         <th>@Html.DisplayNameFor(model => model.SectionID)</th>
         <th>@Html.DisplayNameFor(model => model.PartID)</th>
         <th>@Html.DisplayNameFor(model => model.IsFree)</th>
-        <th></th>
+        <th>CRUD</th>
     </tr>
 
     @foreach (var item in Model)

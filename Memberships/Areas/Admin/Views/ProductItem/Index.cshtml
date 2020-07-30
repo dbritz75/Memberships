@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Memberships.Areas.Admin.Models.ProductItemModel>
+@using Memberships.Extensions
+@using Memberships.Areas.Admin.Models;
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Products and Items</h2>
+
+<p>
+    @Html.Partial("_CreateButtonPartial")
+</p>
+<table class="table table-condensed table-striped">
+    <tr class="success">
+        <th>@Html.DisplayNameFor(model => model.ProductTitle)</th>
+        <th>@Html.DisplayNameFor(model => model.ItemTitle)</th>
+        <th>CRUD</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td> @Html.DisplayFor(modelItem => item.ProductTitle)</td>
+    <td> @Html.DisplayFor(modelItem => item.ItemTitle) </td>
+
+        @*This code builds the button url. See Admin/Models/SmallButtonModel.cs*@
+        @Html.Partial("_TableButtonsPartial", new SmallButtonModel
+        { 
+            ItemID=item.ItemID, ProductID = item.ProductID
+        })
+
+</tr>
+    }
+
+</table>
+

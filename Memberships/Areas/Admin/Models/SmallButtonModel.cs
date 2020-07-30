@@ -7,7 +7,7 @@ using System.Web;
 namespace Memberships.Areas.Admin.Models
 {
     public class SmallButtonModel
-    //This is for a generic "tiny button" that will be used on index pages (Edit, Details, Delete, etc.)
+    //This is for a generic "tiny button group" that will be used on index pages (Edit, Details, Delete, etc.)
     {
         public string Action { get; set; }
         public string Text { get; set; }
@@ -22,21 +22,21 @@ namespace Memberships.Areas.Admin.Models
             get 
             {
                 var param = new StringBuilder("?");
-                if((ID ?? 0) > 0)
+                if(ID != null && ID>0)
                 {   //If the ID is not null then "id=<ID>" will be appended to the parameter string.
                     param.Append(String.Format("{0}={1}&","id",ID));
                 }
                 if ((ItemID ?? 0) > 0)
                 {   //If the ID is not null then "id=<ID>" will be appended to the parameter string.
-                    param.Append(String.Format("{0}={1}&", "id", ItemID));
+                    param.Append(String.Format("{0}={1}&", "ItemID", ItemID));
                 }
                 if ((ProductID ?? 0) > 0)
                 {   //If the ID is not null then "id=<ID>" will be appended to the parameter string.
-                    param.Append(String.Format("{0}={1}&", "id", ProductID));
+                    param.Append(String.Format("{0}={1}&", "ProductID", ProductID));
                 }
                 if ((SubscriptionID ?? 0) > 0)
                 {   //If the ID is not null then "id=<ID>" will be appended to the parameter string.
-                    param.Append(String.Format("{0}={1}&", "id", SubscriptionID));
+                    param.Append(String.Format("{0}={1}&", "SubscriptionID", SubscriptionID));
                 }
                 return param.ToString().Substring(0,param.Length-1); //Remove last "&"
             }

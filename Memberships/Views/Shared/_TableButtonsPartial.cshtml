@@ -2,46 +2,46 @@
 @using Memberships.Areas.Admin.Models;
 
 @*Now it's time to build the tiny buttons from SmallButtonModel into a row that can be displayed on an index page.*@
-<td style="width:120px;">
-    <div class="btn-group" role="group">
-        @Html.Partial("_SmallButtonPartial",
-        new SmallButtonModel
-        {
-            Action = "Edit",
-            ButtonType = "btn-primary",
-            Glyph = "pencil",
-            Text = "Edit Button",
-            ID = Model.ID,
-            ItemID = Model.ItemID,
-            ProductID = Model.ProductID,
-            SubscriptionID = Model.SubscriptionID
-        })
+    <td>
+        <div class="btn-group" role="group">
+            @Html.Partial("_SmallButtonPartial",
+            new SmallButtonModel
+            {
+                Action = "Edit",
+                ButtonType = "btn-primary",
+                Glyph = "pencil",
+                Text = "Edit Button",
+                ID = Model.ID,
+                ItemID = Model.ItemID,
+                ProductID = Model.ProductID,
+                SubscriptionID = Model.SubscriptionID
+            })
 
-        @Html.Partial("_SmallButtonPartial",
-        new SmallButtonModel
-        {
-            Action = "Details",
-            ButtonType = "btn-success",
-            Glyph = "list",
-            Text = "Detail Button",
-            ID = Model.ID,
-            ItemID = Model.ItemID,
-            ProductID = Model.ProductID,
-            SubscriptionID = Model.SubscriptionID
-        })
+            @Html.Partial("_SmallButtonPartial",
+            new SmallButtonModel
+            {
+                Action = "Details",
+                ButtonType = "btn-success",
+                Glyph = "list",
+                Text = "Detail Button",
+                ID = Model.ID,
+                ItemID = Model.ItemID,
+                ProductID = Model.ProductID,
+                SubscriptionID = Model.SubscriptionID
+            })
 
-        @Html.Partial("_SmallButtonPartial",
-        new SmallButtonModel
-        {
-            Action = "Delete",
-            ButtonType = "btn-danger",
-            Glyph = "trash",
-            Text = "Delete Button",
-            ID = Model.ID,
-            ItemID = Model.ItemID,
-            ProductID = Model.ProductID,
-            SubscriptionID = Model.SubscriptionID
-        })
+            @Html.Partial("_SmallButtonPartial",
+            new SmallButtonModel
+            {
+                Action = "Delete",
+                ButtonType = "btn-danger",
+                Glyph = "trash",
+                Text = "Delete Button",
+                ID = Model.ID,
+                ItemID = Model.ItemID,
+                ProductID = Model.ProductID,
+                SubscriptionID = Model.SubscriptionID
+            })
 
-    </div>
-</td>
+        </div>
+    </td>
