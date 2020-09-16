@@ -1,0 +1,82 @@
+﻿@model Memberships.Models.UserSubscriptionViewModel
+@using Memberships.Extensions
+@{
+    ViewBag.Title = "Subscriptions";
+}
+
+<h2>Subscriptions</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Subscriptions For User @Model.UserFName @Model.UserLName</h4>
+        <hr />
+        @if (Model.disableDropdown)
+        {
+            <div><strong>User has all subscriptions</strong></div>
+            <br/><br/>
+        }
+        else
+        {
+        <div class="form-group">
+            @Html.LabelFor(model => model.Subscriptions, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.SubscriptionID, Model.Subscriptions.ToSelectListItem(Model.SubscriptionID),
+
+                new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SubscriptionID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-success btn-sm" />
+            </div>
+        </div>
+        }
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+    </div>
+}
+
+<div class="form-actions no-color">
+    <input type="submit" value="Delete" class="btn btn-danger btn-sm" />
+    @Html.Partial("_BackToListButtonPartial")
+</div>
+
+<hr />
+<br />
+<br />
+
+<table class="table table-condensed table-striped">
+    <tr class="success">
+        <th>ID</th>
+        <th>Title</th>
+        <th>Code</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th></th>
+    </tr>
+    @*Display all subscriptions*@
+
+    @foreach (var item in Model.UserSubscriptions)
+    {
+        <tr>
+            <td>@Html.DisplayFor(mi => item.ID) </td>
+            <td>@Html.DisplayFor(mi => item.Title) </td>
+            <td>@Html.DisplayFor(mi => item.RegistrationCode) </td>
+            <td>@Html.DisplayFor(mi => item.StartDate) </td>
+            <td>@Html.DisplayFor(mi => item.EndDate) </td>
+            <td>
+                <a type="button" class="btn btn-danger btn-sm"
+                   href="@Url.Action("RemoveUserSubscription")?SubscriptionID=@item.ID&UserID=@Model.UserID">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+            </td>
+        </tr>
+    }
+</table>
+

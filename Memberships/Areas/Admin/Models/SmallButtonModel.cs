@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,29 +18,34 @@ namespace Memberships.Areas.Admin.Models
         public int? ItemID { get; set; }
         public int? ProductID { get; set; }
         public int? SubscriptionID { get; set; }
-        public string ActionParameters //Build a string containing any id paramaters which are passed in.
+        public string UserID { get; set; }
+
+        public string ActionParameters
         {
-            get 
+            get
             {
                 var param = new StringBuilder("?");
-                if(ID != null && ID>0)
-                {   //If the ID is not null then "id=<ID>" will be appended to the parameter string.
-                    param.Append(String.Format("{0}={1}&","id",ID));
+                {
+                    //If the ID is not null then "id=<ID>" will be appended to the parameter string.
+                    if (ID != null && ID > 0)
+                        param.Append(String.Format("{0}={1}&", "id", ID));
+
+                    if (ItemID != null && ItemID > 0)
+                        param.Append(String.Format("{0}={1}&", "itemId", ItemID));
+
+                    if (ProductID != null && ProductID > 0)
+                        param.Append(String.Format("{0}={1}&", "productId", ProductID));
+
+                    if (SubscriptionID != null && SubscriptionID > 0)
+                        param.Append(String.Format("{0}={1}&", "subscriptionId", SubscriptionID));
+
+                    if (UserID != null && !UserID.Equals(string.Empty))
+                        param.Append(string.Format("{0}={1}&", "userId", UserID));
+
+                    return param.ToString().Substring(0, param.Length - 1); //Remove last "&"
                 }
-                if ((ItemID ?? 0) > 0)
-                {   //If the ID is not null then "id=<ID>" will be appended to the parameter string.
-                    param.Append(String.Format("{0}={1}&", "ItemID", ItemID));
-                }
-                if ((ProductID ?? 0) > 0)
-                {   //If the ID is not null then "id=<ID>" will be appended to the parameter string.
-                    param.Append(String.Format("{0}={1}&", "ProductID", ProductID));
-                }
-                if ((SubscriptionID ?? 0) > 0)
-                {   //If the ID is not null then "id=<ID>" will be appended to the parameter string.
-                    param.Append(String.Format("{0}={1}&", "SubscriptionID", SubscriptionID));
-                }
-                return param.ToString().Substring(0,param.Length-1); //Remove last "&"
             }
         }
     }
+
 }

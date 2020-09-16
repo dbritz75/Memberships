@@ -2,33 +2,56 @@
 @using Memberships.Areas.Admin.Models;
 
 @*Now it's time to build the tiny buttons from SmallButtonModel into a row that can be displayed on an index page.*@
-    <td>
-        <div class="btn-group" role="group">
-            @Html.Partial("_SmallButtonPartial",
-            new SmallButtonModel
-            {
-                Action = "Edit",
-                ButtonType = "btn-primary",
-                Glyph = "pencil",
-                Text = "Edit Button",
-                ID = Model.ID,
-                ItemID = Model.ItemID,
-                ProductID = Model.ProductID,
-                SubscriptionID = Model.SubscriptionID
-            })
+<td>
+    <div class="btn-group" role="group">
+        @Html.Partial("_SmallButtonPartial",
+        new SmallButtonModel
+        {
+            Action = "Edit",
+            ButtonType = "btn-primary",
+            Glyph = "pencil",
+            Text = "Edit Button",
+            ID = Model.ID,
+            ItemID = Model.ItemID,
+            ProductID = Model.ProductID,
+            SubscriptionID = Model.SubscriptionID,
+            UserID = Model.UserID
+        })
+
+        @if (Model.UserID == null || Model.UserID.Equals(string.Empty))
+        {
 
             @Html.Partial("_SmallButtonPartial",
-            new SmallButtonModel
-            {
-                Action = "Details",
-                ButtonType = "btn-success",
-                Glyph = "list",
-                Text = "Detail Button",
-                ID = Model.ID,
-                ItemID = Model.ItemID,
-                ProductID = Model.ProductID,
-                SubscriptionID = Model.SubscriptionID
-            })
+                 new SmallButtonModel
+                 {
+                     Action = "Details",
+                     ButtonType = "btn-success",
+                     Glyph = "list",
+                     Text = "Detail Button",
+                     ID = Model.ID,
+                     ItemID = Model.ItemID,
+                     ProductID = Model.ProductID,
+                     SubscriptionID = Model.SubscriptionID,
+                     UserID = Model.UserID
+                 })
+        }
+
+        @if (Model.UserID != null && !Model.UserID.Equals(string.Empty))
+        {
+            @Html.Partial("_SmallButtonPartial",
+                    new SmallButtonModel
+                    {
+                        Action = "Subscriptions",
+                        ButtonType = "btn-info",
+                        Glyph = "list",
+                        Text = "Subscriptions",
+                        ID = Model.ID,
+                        ItemID = Model.ItemID,
+                        ProductID = Model.ProductID,
+                        SubscriptionID = Model.SubscriptionID,
+                        UserID = Model.UserID
+                    })
+        }
 
             @Html.Partial("_SmallButtonPartial",
             new SmallButtonModel
@@ -40,8 +63,9 @@
                 ID = Model.ID,
                 ItemID = Model.ItemID,
                 ProductID = Model.ProductID,
-                SubscriptionID = Model.SubscriptionID
+                SubscriptionID = Model.SubscriptionID,
+                UserID = Model.UserID
             })
 
         </div>
-    </td>
+</td>

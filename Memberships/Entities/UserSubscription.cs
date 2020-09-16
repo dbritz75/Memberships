@@ -14,6 +14,9 @@ namespace Memberships.Entities
         [Key,Column(Order =1)]
         public int SubscriptionID { get; set; }
 
+        public string  FirstName { get; set; }
+        public string LastName { get; set; }
+
         [Required]
         [Key, Column(Order = 2)]
         [MaxLength(128)]

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -9,6 +7,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Memberships.Models;
+using System.Collections.Generic;
+using Memberships.Extensions;
+using System.Net;
+using System.Data.Entity;
+using Memberships.Entities;
 
 namespace Memberships.Controllers
 {
@@ -151,7 +154,17 @@ namespace Memberships.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    isActive = true,
+                    Registered = DateTime.Now,
+                    EmailConfirmed=true
+
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -423,6 +436,271 @@ namespace Memberships.Controllers
             base.Dispose(disposing);
         }
 
+        public async Task<ActionResult> Index()
+        {
+            var users = new List<UserViewModel>();
+            await users.GetUsers();
+
+            return View(users);
+        }
+
+        [Authorize(Roles = "Admin")]  //Only admins can access this action.
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/Create
+        [HttpPost]
+        [Authorize(Roles ="Admin")]  //Only admins can access this action.
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(UserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    isActive = true,
+                    Registered = DateTime.Now,
+                    EmailConfirmed = true
+
+                };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Account");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        // GET: Admin/Item/Edit/5
+        [Authorize(Roles = "Admin")]  //Only admins can access this action.
+        public async Task<ActionResult> Edit(string userID)
+        {
+            if (userID == null || userID.Equals(string.Empty))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser user = await UserManager.FindByIdAsync(userID);
+            if (userID == null)
+            {
+                return HttpNotFound();
+            }
+            var model = new UserViewModel
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                userID = user.Id,
+                Password = user.PasswordHash
+            };
+
+            return View(model);
+        }
+
+
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]  //Only admins can access this action.
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(UserViewModel model)
+        {
+            try 
+            {
+                if (model == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                if (ModelState.IsValid)
+                {
+                    var user = await UserManager.FindByIdAsync(model.userID);
+                    if (user != null)
+                    {
+                        user.Email = model.Email;
+                        user.UserName = model.Email;
+                        user.FirstName = model.FirstName;
+                        user.LastName = model.LastName;
+                        if (!user.PasswordHash.Equals(model.Password)) //password in the view has changed / new password.
+                            user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.Password);
+                        //Update user in users table
+                        var result = await UserManager.UpdateAsync(user);
+                        if (result.Succeeded)
+                        {
+                            return RedirectToAction("Index");
+                        }
+                        AddErrors(result);
+                    }
+                }
+
+            }
+            catch { }
+            return View(model);
+        }
+
+
+        [Authorize(Roles = "Admin")]  //Only admins can access this action.
+        public async Task<ActionResult> Delete(string userID)
+        {
+            if (userID == null || userID.Equals(string.Empty))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser user = await UserManager.FindByIdAsync(userID);
+            if (userID == null)
+            {
+                return HttpNotFound();
+            }
+            var model = new UserViewModel
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                userID = user.Id,
+                Password = "Fake Password"
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]  //Only admins can access this action.
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(UserViewModel model)
+        {
+            try
+            {
+                if (model == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                if (ModelState.IsValid) //Correct model sent in from Delete view
+                {
+                    var user = await UserManager.FindByIdAsync(model.userID);
+                    var result = await UserManager.DeleteAsync(user);
+                    if (result.Succeeded)
+                    {
+                        //Remove subscriptions from the deleted user.
+                        var db = new ApplicationDbContext();
+                        var subscriptions = db.User_Subscriptions.Where(u => u.UserID.Equals(user.Id));
+                        db.User_Subscriptions.RemoveRange(subscriptions);
+                        await db.SaveChangesAsync();
+                        return RedirectToAction("Index", "Account");
+                    }
+                    AddErrors(result);
+                    }
+            }
+            catch { }
+            return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]  //Only admins can access this action.
+        public async Task<ActionResult> Subscriptions(string userID)
+        {
+            if (userID == null || userID.Equals(string.Empty))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var model = new UserSubscriptionViewModel();
+            var db = new ApplicationDbContext();
+
+            //Get list of a user's subscriptions to display at bottom section of Subscriptions view
+            model.UserSubscriptions = await
+                (from us in db.User_Subscriptions
+                 join s in db.Subscriptions on us.SubscriptionID equals s.ID
+                 where us.UserID.Equals(userID)
+                 select new UserSubscriptionModel
+                 {
+                     ID = us.SubscriptionID,
+                     StartDate = us.StartDate,
+                     EndDate = us.EndDate,
+                     FirstName=us.FirstName,
+                     LastName=us.LastName,
+                     Description = s.Description,
+                     RegistrationCode = s.RegistrationCode,
+                     Title = s.Title
+                 }).ToListAsync();
+
+            //Select subscriptions that this user has????
+            var ids = model.UserSubscriptions.Select(us => us.ID);
+
+            // Fetch all IDs from the subscriptions table where the ID of the subscription is not in this list of user descriptionss (????)
+            //Fetch subscriptions where that ID isn't present ("available" subscriptions)
+            model.Subscriptions = await db.Subscriptions.Where(s => !ids.Contains(s.ID)).ToListAsync();
+
+            model.disableDropdown = model.Subscriptions.Count.Equals(0);
+            model.UserID = userID;
+            
+            return View(model);
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]  //Only admins can access this action.
+        public async Task<ActionResult> Subscriptions(UserSubscriptionViewModel model)
+        {
+            try
+            {
+                if (model == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                if (ModelState.IsValid)
+                {
+                    var db = new ApplicationDbContext();
+                    db.User_Subscriptions.Add(new User_Subscription
+                    {
+                        UserID = model.UserID,
+                        SubscriptionID = model.SubscriptionID,
+                        FirstName=model.UserFName,
+                        LastName=model.UserLName,
+                        StartDate = DateTime.Now,
+                        EndDate = DateTime.MaxValue
+                    });
+                    await db.SaveChangesAsync();
+                }
+            }
+            catch { }
+            return RedirectToAction("Subscriptions", "Account", new {userID = model.UserID });
+        }
+
+        [Authorize(Roles = "Admin")]  //Only admins can access this action.
+        public async Task<ActionResult> RemoveUserSubscription(
+        string userId, int subscriptionId)
+        {
+            try
+            {
+                if (userId == null || userId.Length.Equals(0) ||
+                    subscriptionId <= 0)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                if (ModelState.IsValid)
+                {
+                    var db = new ApplicationDbContext();
+                    var subscriptions = db.User_Subscriptions.Where(
+                        us => us.UserID.Equals(userId) &&
+                        us.SubscriptionID.Equals(subscriptionId));
+
+                    db.User_Subscriptions.RemoveRange(subscriptions);
+                    await db.SaveChangesAsync();
+                }
+            }
+            catch { }
+            return RedirectToAction("Subscriptions", "Account", new { userId = userId });
+        }
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
