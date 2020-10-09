@@ -2,12 +2,12 @@
     ViewBag.Title = "Home Page";
 }
 
-    <div class="jumbotron">
+    <!--<div class="jumbotron">
         <h1>David's Membership Book and Video Site Page Thing</h1>
         <p class="lead">Your one-stop shop for things like... well we're not sure yet but we got stuff we know you'll love!</p>
-        <h4>Everything except cat videos. They're cute, but our management felt they don't belong on a book and course site.</h4>
+        <h4>Everything except cat videos. They're cute, but our management felt they don't belong on a book and course site.</h4>-->
         @*<p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>*@
-    </div>
+    <!--</div>
 
 <div class="row">
     <div class="col-md-4">
@@ -22,4 +22,25 @@
         <h2>We even got courses!</h2>
         <img src="~/Images/onlinecourse.jpeg" />
     </div>
+</div>-->
+
+<div class="row">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="col-xs-12">
+            <h2>Yo, I'm logged in! You'll have to wait your turn.</h2>
+        </div>
+    }
+    else
+    {
+        //Left column
+        <div class="col-lg-9 col-md-8 col-sm-7">
+            <h2>Dude, you mean I'm not logged in?? Let me in please!</h2>
+        </div>
+        //Right column
+        <div class="col-lg-3 col-md-4 col-sm-5">
+            <h2>LOGIN OR REGISTER ICI</h2>
+        </div>
+
+    }
 </div>

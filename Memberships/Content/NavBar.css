@@ -1,0 +1,36 @@
+﻿.navbar {
+    border-bottom: 1px solid #000000;
+    background-color: #C8C8C8;
+    height: 80px;
+    font-size: medium;
+}
+
+body {
+    font-family: 'Merriweather', serif;
+}
+
+.nav a {
+    color: #333;
+}
+
+    .nav a:hover 
+    {
+        color: #00ee21;
+    }
+
+    .nav > li > a:hover
+    {
+        background-color: lightgray
+    }
+
+.navbar-nav > li > a
+{
+    margin-top: 25px;
+    padding-top: 5px;
+    max-height: 30px;
+}
+
+.body-content
+{
+    margin-top: 40px;
+}
